@@ -27,4 +27,7 @@ public class AppUser {
     @Column(name = "password", nullable = false, length = 1000)
     private  String password;
 
+    @Column(name = "role", length = 25)
+    private String role;
+
 }

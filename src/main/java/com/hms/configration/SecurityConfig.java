@@ -10,7 +10,7 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter;
 public class SecurityConfig {
 
 
-    private JWTFilter jwtFilter;
+   private JWTFilter jwtFilter;
 
     public SecurityConfig(JWTFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
@@ -23,8 +23,11 @@ public class SecurityConfig {
     {
         http.csrf().disable().cors().disable();//h(cd)2
         //haap-> it is for keeping all the url open
-        http.addFilterBefore(jwtFilter, AuthorizationFilter.class); //this filter will be called before the authentication filter
-        http.authorizeHttpRequests().anyRequest().permitAll();
+       http.addFilterBefore(jwtFilter, AuthorizationFilter.class); //this filter will be called before the authentication filter
+       http.authorizeHttpRequests().anyRequest().permitAll();
+        //http.authorizeHttpRequests().requestMatchers("/api/v1/users/login","/api/v1/users/signup","/api/v1/users/signup-property-owner").permitAll()
+              //  .requestMatchers("/api/v1/countries/addCountry").hasAnyRole("OWNER","ADMIN")
+               // .anyRequest().authenticated();
          return http.build();//it will create  an  http object
     }
 }

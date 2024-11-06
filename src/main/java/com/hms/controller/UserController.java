@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/users")
+    @RequestMapping("/api/v1/users")
 public class UserController {
     private UserService userService;
     private AppUserDto userDto;
@@ -45,6 +45,14 @@ public class UserController {
            return new ResponseEntity<>("user/ password wrong",HttpStatus.FORBIDDEN);
   }
 }
+    @PostMapping("/signup-property-owner")
+    public ResponseEntity<?>createPropertyOwner(@RequestBody AppUserDto user){
+
+        AppUserDto Dto= userService.getProperty(user);
+        return new ResponseEntity<>(Dto, HttpStatus.CREATED);
+
+
+    }
 }
 
 

@@ -53,10 +53,11 @@ public class UserService {
         }
 
         // Encrypt the password
-        String encryptedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(5));
+        String encryptedPassword = BCrypt.hashpw(userDto.getPassword(),BCrypt.gensalt(5));
 
         // Set the encrypted password into the AppUser entity
         appUser.setPassword(encryptedPassword);
+        appUser.setRole("ROLE_USER");
 
         // Save the user entity and return the DTO
         AppUser savedUser = appUserRepository.save(appUser);
@@ -76,4 +77,32 @@ public class UserService {
           //  return null;
         }
         return null;
-    }}
+    }
+    public AppUserDto getProperty(AppUserDto userDto) {
+        // Map DTO to Entity
+        AppUser appUser = mapToEntity(userDto);
+
+        // Check if username is already present
+        Optional<AppUser> opUser = appUserRepository.findByUsername(appUser.getUsername());
+        if (opUser.isPresent()) {
+            throw new IllegalArgumentException("Username already present");
+        }
+
+        // Check if email is already present
+        Optional<AppUser> opEmail = appUserRepository.findByEmail(appUser.getEmail());
+        if (opEmail.isPresent()) {
+            throw new IllegalArgumentException("Email already present");
+        }
+
+        // Encrypt the password
+        String encryptedPassword = BCrypt.hashpw(userDto.getPassword(),BCrypt.gensalt(5));
+
+        // Set the encrypted password into the AppUser entity
+        appUser.setPassword(encryptedPassword);
+        appUser.setRole("ROLE_OWNER");
+
+        // Save the user entity and return the DTO
+        AppUser savedUser = appUserRepository.save(appUser);
+        return mapToDto(savedUser);
+    }
+}

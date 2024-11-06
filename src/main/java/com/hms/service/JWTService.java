@@ -30,7 +30,8 @@ public class JWTService {
     public String generateToken(String username){
         return JWT.create()
                 .withClaim("name", username)
-                .withExpiresAt(new Date(System.currentTimeMillis()+expiryTime)).withIssuer(issuer)
+                .withExpiresAt(new Date(System.currentTimeMillis()+expiryTime))
+                .withIssuer(issuer)
                 .sign(algorithm);
     }
     public  String getUserName(String token){
